@@ -44,6 +44,7 @@
 }
 .premium-ui .nav-links a { color: #3b3b37; font-weight: 700; }
 .premium-ui .nav-links a:hover { color: var(--p-accent); }
+.premium-ui .hamburger span { background: #131a28; }
 
 .premium-ui #hero {
   background:
@@ -210,6 +211,8 @@
 @media (max-width: 768px) {
   .premium-ui .nav-links,
   .premium-ui .nav-cta { display: none; }
+  .premium-ui .float-btns,
+  .premium-ui #scroll-top { display: none !important; }
   .premium-ui .hero-btns .btn { width: 100%; justify-content: center; }
   .premium-ui .hero-stats {
     gap: 14px;

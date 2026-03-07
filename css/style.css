@@ -314,6 +314,8 @@ p { color: var(--text-light); }
 @media (max-width: 768px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
+  .float-btns { display: none !important; }
+  #scroll-top { display: none !important; }
   .footer-grid { grid-template-columns: 1fr; }
   .about-features { grid-template-columns: 1fr; }
   .hero-stats { gap: 20px; }

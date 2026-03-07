@@ -32,7 +32,7 @@
       color: #fff;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(37,99,235,0.5);
+      box-shadow: 0 2px 10px rgba(37,99,235,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -43,7 +43,7 @@
     }
     #namoh-chat-fab:hover {
       transform: scale(1.12);
-      box-shadow: 0 6px 28px rgba(37,99,235,0.6);
+      box-shadow: 0 4px 15px rgba(37,99,235,0.4);
     }
     #namoh-chat-fab .namoh-fab-badge {
       position: absolute;
@@ -62,8 +62,8 @@
       color: #000;
     }
     @keyframes namoh-fab-pulse {
-      0%, 100% { box-shadow: 0 4px 20px rgba(37,99,235,0.5); }
-      50%       { box-shadow: 0 4px 34px rgba(124,58,237,0.7); }
+      0%, 100% { box-shadow: 0 2px 10px rgba(37,99,235,0.3); }
+      50%       { box-shadow: 0 4px 16px rgba(124,58,237,0.4); }
     }
 
     /* ── Chat Panel ── */
