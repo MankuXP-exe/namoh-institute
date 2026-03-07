@@ -540,64 +540,31 @@
         <h2 class="section-title">Campus &amp; Facilities</h2>
         <p class="section-subtitle">A glimpse of our modern, well-equipped institute in Farrukh Nagar.</p>
       </div>
-      <div class="gallery-grid">
-        <div class="gal-item reveal">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#0F172A,#1E3A8A,#2563EB);">
-            <div class="gal-bg">
-              <div class="gal-icon">🖥️</div><span>Computer Lab</span><span style="font-size:0.75rem;opacity:0.7;">AC
-                Lab with Latest Systems</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
-        <div class="gal-item reveal reveal-delay-1">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#1E3A8A,#7C3AED);">
-            <div class="gal-bg">
-              <div class="gal-icon">📚</div><span>Classroom</span><span style="font-size:0.75rem;opacity:0.7;">Digital
-                Smart Boards</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
-        <div class="gal-item reveal reveal-delay-2">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#F59E0B,#D97706,#92400E);">
-            <div class="gal-bg">
-              <div class="gal-icon">🎓</div><span>Graduation</span><span
-                style="font-size:0.75rem;opacity:0.7;">Certificate Distribution</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
-        <div class="gal-item reveal">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#064E3B,#10B981);">
-            <div class="gal-bg">
-              <div class="gal-icon">🗣️</div><span>English Lab</span><span style="font-size:0.75rem;opacity:0.7;">Spoken
-                English Sessions</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
-        <div class="gal-item reveal reveal-delay-1">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#4C1D95,#7C3AED,#EC4899);">
-            <div class="gal-bg">
-              <div class="gal-icon">🏆</div><span>Award Ceremony</span><span
-                style="font-size:0.75rem;opacity:0.7;">Recognizing Achievers</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
-        <div class="gal-item reveal reveal-delay-2">
-          <div class="gal-inner" style="background:linear-gradient(135deg,#450A0A,#DC2626);">
-            <div class="gal-bg">
-              <div class="gal-icon">🧑‍🏫</div><span>Expert Faculty</span><span
-                style="font-size:0.75rem;opacity:0.7;">Certified Instructors</span>
-            </div>
-          </div>
-          <div class="gal-overlay">🔍 View</div>
-        </div>
+      <div class="gallery-filters reveal reveal-delay-1" style="margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <button class="gal-filter-btn tab-btn active" data-filter="All">All</button>
+        <button class="gal-filter-btn tab-btn" data-filter="Institute">Institute</button>
+        <button class="gal-filter-btn tab-btn" data-filter="Computer Course">Computer Course</button>
+        <button class="gal-filter-btn tab-btn" data-filter="Spoken English">Spoken English</button>
+        <button class="gal-filter-btn tab-btn" data-filter="Accounting Course">Accounting Course</button>
+        <button class="gal-filter-btn tab-btn" data-filter="Posters">Posters</button>
+      </div>
+      <div class="gallery-grid" id="dynamic-gallery">
+        <!-- Gallery items will be injected here by JS -->
       </div>
     </div>
   </section>
+
+  <!-- ========== LIGHTBOX ========== -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-overlay"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close Lightbox">✕</button>
+      <button class="lightbox-prev" aria-label="Previous Image">◀</button>
+      <img id="lightbox-img" src="" alt="Gallery Preview" />
+      <button class="lightbox-next" aria-label="Next Image">▶</button>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
 
   <!-- ========== CONTACT ========== -->
   <section id="contact">

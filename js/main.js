@@ -338,6 +338,149 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ---- DYNAMIC GALLERY & LIGHTBOX ----
+const galleryImages = [
+    // Institute
+    { src: "images/gallery/art.jpg", title: "Art Room", category: "Institute" },
+    { src: "images/gallery/computer lab.jpg", title: "Computer Lab", category: "Institute" },
+    { src: "images/gallery/computer rom 2.jpg", title: "Computer Room", category: "Institute" },
+    { src: "images/gallery/computer room.jpg", title: "Computer Room", category: "Institute" },
+    { src: "images/gallery/institute.jpg", title: "NAMOH Institute Building", category: "Institute" },
+    { src: "images/gallery/main entrence.jpg", title: "Main Entrance", category: "Institute" },
+    { src: "images/gallery/office.jpg", title: "Office", category: "Institute" },
+    { src: "images/gallery/whole.jpg", title: "Campus View", category: "Institute" },
+
+    // Computer Course
+    { src: "images/gallery/computer clases.jpg", title: "Students Learning", category: "Computer Course" },
+    { src: "images/gallery/computer class.jpg", title: "Computer Training Session", category: "Computer Course" },
+
+    // Spoken English
+    { src: "images/gallery/english 2.jpg", title: "Spoken English Session", category: "Spoken English" },
+    { src: "images/gallery/english 3.jpg", title: "Spoken English Class", category: "Spoken English" },
+    { src: "images/gallery/english 4.jpg", title: "Group Discussion", category: "Spoken English" },
+    { src: "images/gallery/english coaching.jpg", title: "English Coaching", category: "Spoken English" },
+    { src: "images/gallery/english course.jpg", title: "English Course", category: "Spoken English" },
+    { src: "images/gallery/english.jpg", title: "Spoken English", category: "Spoken English" },
+    { src: "images/gallery/public speaking and personality development.jpg", title: "Public Speaking Session", category: "Spoken English" },
+    { src: "images/gallery/spoken english.jpg", title: "Spoken English Session", category: "Spoken English" },
+
+    // Posters & Accounting
+    { src: "images/gallery/BBOSE Board.jpg", title: "BBOSE Board Poster", category: "Posters" },
+    { src: "images/gallery/Diploma in Financial Accounting.jpg", title: "Accounting Session", category: "Accounting Course" },
+    { src: "images/gallery/all courses.jpg", title: "All Courses Poster", category: "Posters" },
+    { src: "images/gallery/bbose board 2.jpg", title: "BBOSE Board Poster", category: "Posters" },
+    { src: "images/gallery/courses details.jpg", title: "Courses Details Poster", category: "Posters" },
+    { src: "images/gallery/demo clases.jpg", title: "Demo Classes Poster", category: "Posters" },
+    { src: "images/gallery/diploma in computer teacher traning.jpg", title: "Computer Teacher Training Poster", category: "Posters" },
+    { src: "images/gallery/improve you kid speaking.jpg", title: "Spoken English Poster", category: "Posters" },
+    { src: "images/gallery/nurscery teacher traning.jpg", title: "Nursery Teacher Training Poster", category: "Posters" },
+    { src: "images/gallery/our courses.jpg", title: "Our Courses Poster", category: "Posters" },
+    { src: "images/gallery/professional english.jpg", title: "Professional English Poster", category: "Posters" }
+];
+
+let currentGalleryImages = [];
+let currentLightboxIndex = 0;
+
+function renderGallery(filter = "All") {
+    const container = document.getElementById('dynamic-gallery');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    currentGalleryImages = galleryImages.filter(item => {
+        if (filter === "All") return true;
+        
+        // Match specific category
+        if (item.category === filter) return true;
+        
+        return false;
+    });
+
+    currentGalleryImages.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'gal-item reveal visible';
+        card.style.cursor = 'pointer';
+        
+        const uri = encodeURI(item.src);
+        
+        card.innerHTML = `
+            <div class="gal-inner" style="background-image: url('${uri}'); background-size: cover; background-position: center;">
+                <img src="${uri}" alt="${item.title}" loading="lazy" style="display: none;">
+                <div class="gal-bg" style="background: rgba(0,0,0,0.5); width: 100%; height: 100%; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: background 0.3s;">
+                    <div class="gal-icon" style="background: transparent;">📸</div>
+                    <span style="color: white; font-weight: bold; text-align: center; padding: 0 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${item.title}</span>
+                    <span style="font-size:0.75rem; color: #FFD763; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">${item.category}</span>
+                </div>
+            </div>
+            <div class="gal-overlay">🔍 View</div>
+        `;
+        
+        card.addEventListener('click', () => openLightbox(index));
+        container.appendChild(card);
+    });
+}
+
+// Lightbox Logic
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+
+function openLightbox(index) {
+    if (!lightbox) return;
+    currentLightboxIndex = index;
+    updateLightboxImage();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function updateLightboxImage() {
+    if (currentGalleryImages.length === 0) return;
+    const item = currentGalleryImages[currentLightboxIndex];
+    lightboxImg.src = encodeURI(item.src);
+    if(lightboxCaption) {
+        lightboxCaption.textContent = item.title;
+    }
+}
+
+function nextLightboxImage(e) {
+    if(e) e.stopPropagation();
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentGalleryImages.length;
+    updateLightboxImage();
+}
+
+function prevLightboxImage(e) {
+    if(e) e.stopPropagation();
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+    updateLightboxImage();
+}
+
+if (lightbox) {
+    document.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+    document.querySelector('.lightbox-next')?.addEventListener('click', nextLightboxImage);
+    document.querySelector('.lightbox-prev')?.addEventListener('click', prevLightboxImage);
+    document.querySelector('.lightbox-overlay')?.addEventListener('click', closeLightbox);
+}
+
+// Filter Logic
+document.querySelectorAll('.gal-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.gal-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGallery(btn.dataset.filter);
+    });
+});
+
+// Initial render
+document.addEventListener('DOMContentLoaded', () => {
+    renderGallery();
+});
+
 // ---- COUNTER ANIMATION FOR HERO STATS ----
 function animateCounter(el, target) {
     let count = 0;
