@@ -1,0 +1,16 @@
+{
+  "name": "namoh-institute",
+  "version": "1.0.0",
+  "description": "NAMOH Institute of Computer & Spoken English — Vercel serverless + MongoDB Atlas",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "mongoose": "^8.3.4"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}

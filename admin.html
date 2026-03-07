@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAMOH Owner Leads Dashboard</title>
+  <style>
+    :root {
+      --bg-1: #0b1220;
+      --bg-2: #111b31;
+      --panel: #f8fafc;
+      --panel-soft: #eef2ff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #dbe2ef;
+      --blue: #2563eb;
+      --cyan: #06b6d4;
+      --green: #16a34a;
+      --amber: #d97706;
+      --shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Poppins", Arial, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(1200px 500px at 20% -10%, #1e3a8a 0%, transparent 60%),
+                  radial-gradient(1000px 500px at 100% 0%, #0ea5e9 0%, transparent 50%),
+                  linear-gradient(140deg, var(--bg-1), var(--bg-2));
+      padding: 28px 16px;
+    }
+
+    .app { max-width: 1240px; margin: 0 auto; }
+    .top {
+      color: #e2e8f0;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { font-size: 1.25rem; font-weight: 700; letter-spacing: .2px; }
+    .brand small { display: block; font-size: .78rem; color: #94a3b8; font-weight: 500; }
+
+    .shell {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .login-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      min-height: 520px;
+    }
+
+    .hero {
+      background: linear-gradient(155deg, #1e3a8a, #2563eb 40%, #0891b2 100%);
+      color: #fff;
+      padding: 38px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      top: -80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      filter: blur(2px);
+    }
+    .hero h1 { margin: 0 0 10px; font-size: 1.95rem; line-height: 1.2; }
+    .hero p { margin: 0 0 26px; color: rgba(255,255,255,.88); font-size: .98rem; }
+    .hero ul { margin: 0; padding-left: 18px; color: rgba(255,255,255,.93); }
+    .hero li { margin-bottom: 8px; font-size: .92rem; }
+
+    .login-panel {
+      background: #fff;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+    .login-panel h2 { margin: 0 0 3px; font-size: 1.35rem; }
+    .login-panel p { margin: 0 0 10px; color: var(--muted); font-size: .9rem; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label { font-size: .85rem; color: #334155; font-weight: 600; }
+
+    input, button, select {
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: .92rem;
+      padding: 11px 12px;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.18);
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: .1px;
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .btn.ghost {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .muted { color: var(--muted); font-size: .84rem; }
+    .error { color: #b91c1c; font-size: .88rem; }
+    .ok { color: #166534; font-size: .88rem; }
+
+    .dashboard { display: none; }
+    .dash-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .dash-head h2 { margin: 0; font-size: 1.14rem; }
+    .dash-actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+    .controls {
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .controls input { min-width: 240px; flex: 1; }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      padding: 14px 18px 18px;
+      background: #f8fafc;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .kpi {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .kpi .label { color: #64748b; font-size: .8rem; }
+    .kpi .value { margin-top: 6px; font-size: 1.5rem; font-weight: 700; }
+
+    .charts {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+    .card h3 { margin: 2px 0 10px; font-size: .96rem; }
+
+    .chart-box {
+      height: 260px;
+      position: relative;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      padding: 8px;
+    }
+    .chart-box canvas { width: 100%; height: 100%; }
+
+    .status { padding: 2px 18px 12px; }
+
+    .table-wrap {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: auto;
+    }
+    .mobile-leads { display: none; }
+    .lead-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+    .lead-row {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 8px;
+      font-size: .84rem;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .lead-row:last-child { border-bottom: none; }
+    .lead-key { color: #64748b; font-weight: 600; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      min-width: 780px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f1f5f9; }
+
+    .pill {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: .74rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .login-wrap { grid-template-columns: 1fr; }
+      .charts { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 560px) {
+      body { padding: 10px 6px; }
+      .top { margin-bottom: 10px; }
+      .brand { font-size: 1.05rem; }
+      .brand small { font-size: .72rem; }
+      .shell { border-radius: 12px; }
+      .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .hero, .login-panel { padding: 18px; }
+      .controls, .dash-head { padding: 10px; }
+      .grid { padding: 10px; gap: 10px; }
+      .dash-head h2 { font-size: 1rem; }
+      .dash-actions { width: 100%; }
+      .dash-actions .btn { flex: 1; min-width: 120px; }
+      .controls input { min-width: 100%; width: 100%; }
+      .controls .btn { width: 100%; }
+      .chart-box { height: 190px; padding: 6px; }
+      .card h3 { font-size: .9rem; margin-bottom: 8px; }
+      .status { padding: 0 10px 8px; }
+    }
+    @media (max-width: 420px) {
+      table { min-width: 700px; }
+      .mobile-leads { display: block; }
+      .table-wrap { display: none; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      .kpi { padding: 10px; }
+      .kpi .value { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <div class="brand">NAMOH Owner Dashboard<small>Leads, trend analytics, and secure access</small></div>
+    </div>
+
+    <div class="shell">
+      <section id="loginSection" class="login-wrap">
+        <div class="hero">
+          <h1>Owner Leads Dashboard</h1>
+          <p>Professional admin panel for admissions tracking. Same lead table format is preserved below.</p>
+          <ul>
+            <li>Secure token-based owner access</li>
+            <li>Lead trend analysis and course insights</li>
+            <li>Fast filters and CSV export</li>
+          </ul>
+        </div>
+        <div class="login-panel">
+          <h2>Sign In</h2>
+          <p>Enter your <strong>ADMIN_SECRET</strong> to unlock the private analytics panel.</p>
+          <div class="field">
+            <label for="token">Admin Secret</label>
+            <input id="token" type="password" placeholder="Enter ADMIN_SECRET" />
+          </div>
+          <button id="loginBtn" class="btn">Access Dashboard</button>
+          <div id="loginStatus" class="muted">No data loaded yet.</div>
+        </div>
+      </section>
+
+      <section id="dashboard" class="dashboard">
+        <div class="dash-head">
+          <h2>Owner Leads Dashboard</h2>
+          <div class="dash-actions">
+            <button id="exportBtn" class="btn ghost">Export CSV</button>
+            <button id="exportXlsBtn" class="btn ghost">Export XLS</button>
+            <button id="logoutBtn" class="btn ghost">Logout</button>
+          </div>
+        </div>
+
+        <div class="controls">
+          <input id="course" type="text" placeholder="Optional course filter (exact name)" />
+          <button id="loadBtn" class="btn">Load Leads</button>
+        </div>
+
+        <div class="status">
+          <div id="status" class="muted">No data loaded yet.</div>
+        </div>
+
+        <div class="grid">
+          <div class="kpis">
+            <div class="kpi"><div class="label">Total Leads</div><div class="value" id="kpiTotal">0</div></div>
+            <div class="kpi"><div class="label">Today</div><div class="value" id="kpiToday">0</div></div>
+            <div class="kpi"><div class="label">Last 7 Days</div><div class="value" id="kpi7d">0</div></div>
+            <div class="kpi"><div class="label">Unique Courses</div><div class="value" id="kpiCourses">0</div></div>
+          </div>
+
+          <div class="charts">
+            <div class="card">
+              <h3>Leads Trend (Last 14 Days)</h3>
+              <div class="chart-box"><canvas id="trendChart"></canvas></div>
+            </div>
+            <div class="card">
+              <h3>Top Courses</h3>
+              <div class="chart-box"><canvas id="courseChart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Leads Table</h3>
+            <div id="mobileLeads" class="mobile-leads"></div>
+            <div class="table-wrap">
+              <table id="tbl" style="display:none;">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Course</th>
+                    <th>Message</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+ </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
